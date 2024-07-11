@@ -124,6 +124,50 @@
         </div>
     <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
     <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+     <!-- Modal -->
+    <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="formEdit">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" style="background: #ededed;padding: 1%;border-radius: 5px;" id="exampleModalLabel">Editar publicacion</h5>
+                    <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mb-2" style="display:none;">
+                                <div class="form-outline" data-mdb-input-init>
+                                    <input type="text" id="idPxd" name="idPxd" class="form-control" />
+                                    <label class="form-label" for="idPxd">id</label>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <div class="form-outline" data-mdb-input-init>
+                                    <input type="text" id="tituloUp" name="tituloUp" class="form-control" />
+                                    <label class="form-label" for="tituloUp">Titulo</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-outline" data-mdb-input-init>
+                                    <textarea class="form-control" id="textoUp" name="textoUp" rows="4"></textarea>
+                                    <label class="form-label" for="textoUp">Message</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-ripple-init data-mdb-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" data-mdb-ripple-init>Guardar cambios</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+     
     
 </body>
 <script src="../mdb/js/jquery.js"></script>

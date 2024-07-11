@@ -1,6 +1,8 @@
 let user
 let modalNewPublicacion = document.getElementById("newPublicacion")
 let modalNewP = new mdb.Modal(modalNewPublicacion)
+let modalEdit = new mdb.Modal(document.getElementById("modalEdit"))
+let publicacionesDb
    
 document.addEventListener('DOMContentLoaded', async ()=>{
     // Tu código aquí
@@ -20,6 +22,12 @@ document.addEventListener('DOMContentLoaded', async ()=>{
         await guardarPublicacion()
         
     });
+    document.getElementById('formEdit').addEventListener('submit', async (e) => {
+        e.preventDefault(); // Evita que el formulario se envíe automáticamente
+        modalEdit.hide()
+        await updatePublicacion()
+        
+    });
 
 
 
@@ -33,6 +41,27 @@ function saludar() {
     toastr.info("Biendenido! "+`<span style="font-weight: bold;">${user.user}</span>`)
 }
 
+async function updatePublicacion() {
+    let formData = new FormData(document.getElementById('formEdit')); // Captura los datos del formulario  
+    let response = await fetch('php/update.php', {
+        method: 'POST',
+        body: formData,
+    });
+    response = await response.json();
+    if(response!="ok"){
+        // Display an error toast, with a title
+        toastr.error(response, 'Error!')
+        setTimeout(() => {
+            modalEdit.show()
+        }, 500);
+    }else{
+        toastr.success("Se edito una publicacion.", 'Exito!')
+        document.getElementById('formEdit').reset()
+        await listarPublicaciones()
+
+    }
+
+}
 async function guardarPublicacion() {
     let formData = new FormData(document.getElementById('nuevaPublicacion')); // Captura los datos del formulario  
     let response = await fetch('php/insertPublicacion.php', {
@@ -47,7 +76,7 @@ async function guardarPublicacion() {
             modalNewP.show()
         }, 500);
     }else{
-        toastr.success("Se guardo la publicacion con exito", 'Exito!')
+        toastr.success("Se guardo la publicacion con exito.", 'Exito!')
         document.getElementById('nuevaPublicacion').reset()
         await listarPublicaciones()
 
@@ -58,6 +87,7 @@ async function guardarPublicacion() {
 async function listarPublicaciones() {
     let response = await fetch('php/listarPublicaciones.php');
     response = await response.json();
+    publicacionesDb=response
     dibujarPublicaciones(response)
 
 }
@@ -82,7 +112,10 @@ function dibujarPublicaciones(publicaciones) {
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-info w-100" data-mdb-ripple-init>Editar</button>
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-danger w-50" data-mdb-ripple-init>Eliminar</button>
+                        <button type="button" onclick="abrirModalEdit(${element.idP})" class="btn btn-info w-50" data-mdb-ripple-init>Editar</button>
+                    </div>
                 </div>
             </div>
         </div>    
@@ -124,5 +157,12 @@ function formatearFecha(fecha) {
     } else {
         return 'Fecha inválida';
     }
+}
+function abrirModalEdit(id) {
+    modalEdit.show()
+    let publicacionEditar = publicacionesDb.find((x) => x.idP === id);
+    document.getElementById("idPxd").value=id
+    document.getElementById("tituloUp").value=publicacionEditar.titulo
+    document.getElementById("textoUp").value=publicacionEditar.texto
 }
 
