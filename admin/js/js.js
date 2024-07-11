@@ -2,6 +2,7 @@ let user
 let modalNewPublicacion = document.getElementById("newPublicacion")
 let modalNewP = new mdb.Modal(modalNewPublicacion)
 let modalEdit = new mdb.Modal(document.getElementById("modalEdit"))
+let modalEliminar = new mdb.Modal(document.getElementById("eliminarP"))
 let publicacionesDb
    
 document.addEventListener('DOMContentLoaded', async ()=>{
@@ -113,7 +114,7 @@ function dibujarPublicaciones(publicaciones) {
                         </div>
                     </div>
                     <div class="d-flex">
-                        <button type="button" class="btn btn-danger w-50" data-mdb-ripple-init>Eliminar</button>
+                        <button type="button" onclick="mostrarModalEliminar(${element.idP})" class="btn btn-danger w-50" data-mdb-ripple-init>Eliminar</button>
                         <button type="button" onclick="abrirModalEdit(${element.idP})" class="btn btn-info w-50" data-mdb-ripple-init>Editar</button>
                     </div>
                 </div>
@@ -166,3 +167,18 @@ function abrirModalEdit(id) {
     document.getElementById("textoUp").value=publicacionEditar.texto
 }
 
+async function mostrarModalEliminar(id) {
+    modalEliminar.show()
+    localStorage.setItem("idEliminar",id)
+}
+async function eliminarPublicacion() {
+    modalEliminar.hide()
+    let response = await fetch('php/eliminar.php?id='+localStorage.getItem("idEliminar"));
+    response = await response.json();
+    if(response!="ok"){
+        toastr.error(response, 'Error!')
+    }else{
+        toastr.success("Se elimino una publicacion.", 'Exito!')
+        await listarPublicaciones()
+    }
+}
